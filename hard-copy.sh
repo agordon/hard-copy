@@ -270,7 +270,7 @@ $ORIG_SHA256
 
 ## If the file is encrypted by this script,
 ## mention an additional decryption step.
-if [ ! -z "$encrypted" ] ; then
+if [ ! -z "$ENCRYPTED" ] ; then
 	echo "
 \\\\item Decrypt the file:
 \\\\begin{verbatim}
@@ -290,14 +290,23 @@ Follow the decoding instructions to restore the file's content.
 
 \\\\begin{figure}
 "
+	col=1
 	for i in $(seq 1 $COUNT) ;
 	do
 		PNG_NUM=$(printf "%03d" $i)
-		echo "    \\\\begin{subfigure}[h]{0.30\\\\textwidth}%
+		echo "    \\\\begin{subfigure}[b]{0.30\\\\textwidth}%
 	\\\\centering%
        \\\\includegraphics[]{qr_${PNG_NUM}.png} \\
        $i~of~$COUNT%
     \\\\end{subfigure}"
+		col=$((col+1))
+		if [ "$col" -eq 4 ]; then
+			col=1
+			echo "
+\\\\end{figure}
+\\\\begin{figure}
+"
+		fi
 	done
 
 	echo "
